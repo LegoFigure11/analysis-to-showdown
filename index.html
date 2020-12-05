@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+  <title>Analysis to Showdown Converter</title>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="text-center">Analysis to Showdown Converter</h1>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Input</span>
+      </div>
+      <textarea id="input" class="form-control" aria-label="With textarea" rows="10"></textarea>
+    </div>
+
+    <br />
+
+    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="convert()">Convert!</button>
+
+    <br />
+
+    <div class="input-group">
+      <textarea class="form-control text-monospace" id="output" aria-label="With textarea" rows="10"></textarea>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    function convert() {
+      var input = $("#input").val();
+      input = input.split("name:").map(e => e.trim());
+      let sets = [];
+      for (var i = 1; i < input.length; i++) {
+        let set = ["PUT THE MON NAME HERE @", "Level: 50"];
+        let lines = input[1].split("\n");
+        for (const line of lines) {
+          if (line.includes("move 1:")) {
+            set[5] = "-" + line.split("move 1:")[1];
+          } else if (line.includes("move 2:")) {
+            set[6] = "-" + line.split("move 2:")[1];
+          } else if (line.includes("move 3:")) {
+            set[7] = "-" + line.split("move 3:")[1];
+          } else if (line.includes("move 4:")) {
+            set[8] = "-" + line.split("move 4:")[1];
+          } else if (line.includes("item:")) {
+            set[0] += line.split("item:")[1];
+          } else if (line.includes("ability:")) {
+            set[2] = "Ability:" + line.split("ability:")[1];
+          } else if (line.includes("nature: ")) {
+            set[4] = "Nature:" + line.split("nature:")[1];
+          } else if (line.includes("evs:")) {
+            set[3] = "EVs:" + line.split("evs:")[1];
+          }
+        }
+        sets.push(set.join("\n"))
+      }
+      console.log(sets)
+      $("#output").val(sets.join("\n\n\n"));
+    }
+  </script>
+
+</body>
+
+</html>
+
+<!--
+[SET]
+name: Special Staller
+move 1: Discharge
+move 2: Eerie Impulse
+move 3: Roost
+move 4: Substitute / Heat Wave / Hurricane
+item: Leftovers
+ability: Pressure
+nature: Calm / Bold
+evs: 252 HP / 252 SpD / 60 Spe
+
+
+0Zapdos @ Life Orb / Sharp Beak
+1Level: 50
+2Ability: Pressure
+3EVs: 252 SpA / 4 SpD / 252 Spe
+4Timid Nature
+5- Hurricane
+6- Thunderbolt
+7- Heat Wave
+8- Roost / Steel Wing
+-->
